@@ -1,0 +1,25 @@
+.compose-image-uploader {
+    padding-bottom: 14px;
+}
+
+.image-size {
+    clear: both;
+    margin-top: 5px;
+    min-height: 30px;
+    padding-top: 10px;
+    width: 100%;
+
+    position: absolute;
+    bottom: -22px;
+}
+
+.image-size-text {
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+.gallery-images .image-size-text {
+    text-align: left;
+}
