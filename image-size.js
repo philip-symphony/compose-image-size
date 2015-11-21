@@ -1,50 +1,53 @@
-// Compose Image Tiles & Fluid Row Background
-$('.toolbar-body').on('mouseenter', '.compose-image-uploader', function() {
-    var imageContainer = $(this);
+Loader(function() {
+    var generateImageSizeMessage = function(currentImage) {
+        var originalWidth   = currentImage[0].naturalWidth,
+            originalHeight  = currentImage[0].naturalHeight;
 
-    if (imageContainer.parents('.gallery-images').length) {
-        return false;
-    } else {
-         var currentImage    = imageContainer.find('img'),
-             originalWidth   = currentImage[0].naturalWidth,
-             originalHeight  = currentImage[0].naturalHeight;
+        var imageSizeMessage =  '<div class="image-size">' +
+                                    '<div class="image-size-text">' +
+                                        originalWidth + 'px x ' + originalHeight + 'px' +
+                                    '</div>' +
+                                '</div>';
 
-         var imageSizeMessage = '<div class="image-size">' +
-                                     '<div class="image-size-text">' +
-                                         originalWidth + 'px x ' + originalHeight + 'px' +
-                                     '</div>' +
-                                 '</div>';
+        return imageSizeMessage;
+    };
 
-        imageContainer.append(imageSizeMessage);
-    }
-});
+    //---------------------------------------------
+    // Compose Image Tiles & Fluid Row Background
+    //---------------------------------------------
+    $('.toolbar-body').on('mouseenter', '.compose-image-uploader', function() {
+        var imageContainer = $(this);
 
-$('.toolbar-body').on('mouseleave', '.compose-image-uploader', function() {
-    $('.image-size').remove();
-});
+        if (imageContainer.parents('.gallery-images').length) {
+            return false;
+        }
 
+        var currentImage = imageContainer.find('img');
 
-// Gallery Tiles
-$('.toolbar-body').on('mouseenter', '.gallery-images .thumb-box', function() {
-    var currentThumb    = $(this),
-        thumbIndex      = currentThumb.attr('data-index'),
-        galleryScope    = currentThumb.parents('.lego-control.ng-scope').scope();
+        currentImage && imageContainer.append(generateImageSizeMessage(currentImage));
+    });
 
-    var imageUrl        = galleryScope.thumbBoxes[thumbIndex].image.originalSrc,
-        currentImage    = $('#compose-body').find('img[src*="'+imageUrl+'"]'),
-        originalWidth   = currentImage[0].naturalWidth,
-        originalHeight  = currentImage[0].naturalHeight;
+    $('.toolbar-body').on('mouseleave', '.compose-image-uploader', function() {
+        $('.image-size').remove();
+    });
 
-     var imageUploader = currentThumb.parents('.gallery-preview').prev('.form-group').find('.compose-image-uploader'),
-         imageSizeMessage = '<div class="image-size">' +
-                                 '<div class="image-size-text">' +
-                                     originalWidth + 'px x ' + originalHeight + 'px' +
-                                 '</div>' +
-                             '</div>';
+    //----------------
+    // Gallery Tiles
+    //----------------
+    $('.toolbar-body').on('mouseenter', '.gallery-images .thumb-box', function() {
+        var currentThumb    = $(this),
+            thumbIndex      = currentThumb.attr('data-index'),
+            galleryScope    = currentThumb.parents('.lego-control.ng-scope').scope();
 
-    imageUploader.append(imageSizeMessage);
-});
+        var imageUrl        = galleryScope.thumbBoxes[thumbIndex].image.originalSrc,
+            currentImage    = $('#compose-body').find('img[src*="'+imageUrl+'"]');
 
-$('.toolbar-body').on('mouseleave', '.gallery-images .thumb-box', function() {
-    $('.image-size').remove();
+        var imageUploader = currentThumb.parents('.gallery-preview').prev('.form-group').find('.compose-image-uploader');
+
+        currentImage && imageUploader.append(generateImageSizeMessage(currentImage));
+    });
+
+    $('.toolbar-body').on('mouseleave', '.gallery-images .thumb-box', function() {
+        $('.image-size').remove();
+    });
 });
