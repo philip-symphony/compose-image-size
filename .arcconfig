@@ -1,0 +1,7 @@
+{
+  "project.name" : "compose-image-size",
+  "phabricator.uri" : "https://phabricator.symphonycommerce.com",
+  "load" : [
+    "/Users/philipbe/Desktop/arc/arcanist/src"
+  ]
+}

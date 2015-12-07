@@ -1,53 +1,65 @@
 Loader(function() {
-    var generateImageSizeMessage = function(currentImage) {
-        var originalWidth   = currentImage[0].naturalWidth,
-            originalHeight  = currentImage[0].naturalHeight;
 
-        var imageSizeMessage =  '<div class="image-size">' +
-                                    '<div class="image-size-text">' +
-                                        originalWidth + 'px x ' + originalHeight + 'px' +
-                                    '</div>' +
-                                '</div>';
+    if ($('[ng-controller="ComposeCtrl"]')) {
 
-        return imageSizeMessage;
-    };
+        //------
+        // CSS
+        //------
+        $('head').append('<link rel="stylesheet" type="text/css" href="https://s3.amazonaws.com/sneakpeeq-sites/symphony-cs-apps/styles/compose-image-size.css">');
 
-    //---------------------------------------------
-    // Compose Image Tiles & Fluid Row Background
-    //---------------------------------------------
-    $('.toolbar-body').on('mouseenter', '.compose-image-uploader', function() {
-        var imageContainer = $(this);
+        //-------------------
+        // Generate Message
+        //-------------------
+        var generateImageSizeMessage = function(currentImage) {
+            var originalWidth   = currentImage[0].naturalWidth,
+                originalHeight  = currentImage[0].naturalHeight;
 
-        if (imageContainer.parents('.gallery-images').length) {
-            return false;
-        }
+            var imageSizeMessage =  '<div class="image-size">' +
+                                        '<div class="image-size-text">' +
+                                            originalWidth + 'px x ' + originalHeight + 'px' +
+                                        '</div>' +
+                                    '</div>';
 
-        var currentImage = imageContainer.find('img');
+            return imageSizeMessage;
+        };
 
-        currentImage && imageContainer.append(generateImageSizeMessage(currentImage));
-    });
+        //---------------------------------------------
+        // Compose Image Tiles & Fluid Row Background
+        //---------------------------------------------
+        $('.toolbar-body').on('mouseenter', '.compose-image-uploader', function() {
+            var imageContainer = $(this);
 
-    $('.toolbar-body').on('mouseleave', '.compose-image-uploader', function() {
-        $('.image-size').remove();
-    });
+            if (imageContainer.parents('.gallery-images').length) {
+                return false;
+            }
 
-    //----------------
-    // Gallery Tiles
-    //----------------
-    $('.toolbar-body').on('mouseenter', '.gallery-images .thumb-box', function() {
-        var currentThumb    = $(this),
-            thumbIndex      = currentThumb.attr('data-index'),
-            galleryScope    = currentThumb.parents('.lego-control.ng-scope').scope();
+            var currentImage = imageContainer.find('img');
 
-        var imageUrl        = galleryScope.thumbBoxes[thumbIndex].image.originalSrc,
-            currentImage    = $('#compose-body').find('img[src*="'+imageUrl+'"]');
+            currentImage && imageContainer.append(generateImageSizeMessage(currentImage));
+        });
 
-        var imageUploader = currentThumb.parents('.gallery-preview').prev('.form-group').find('.compose-image-uploader');
+        $('.toolbar-body').on('mouseleave', '.compose-image-uploader', function() {
+            $('.image-size').remove();
+        });
 
-        currentImage && imageUploader.append(generateImageSizeMessage(currentImage));
-    });
+        //----------------
+        // Gallery Tiles
+        //----------------
+        $('.toolbar-body').on('mouseenter', '.gallery-images .thumb-box', function() {
+            var currentThumb    = $(this),
+                thumbIndex      = currentThumb.attr('data-index'),
+                galleryScope    = currentThumb.parents('.lego-control.ng-scope').scope();
 
-    $('.toolbar-body').on('mouseleave', '.gallery-images .thumb-box', function() {
-        $('.image-size').remove();
-    });
+            var imageUrl        = galleryScope.thumbBoxes[thumbIndex].image.originalSrc,
+                currentImage    = $('#compose-body').find('img[src*="'+imageUrl+'"]');
+
+            var imageUploader = currentThumb.parents('.gallery-preview').prev('.form-group').find('.compose-image-uploader');
+
+            currentImage && imageUploader.append(generateImageSizeMessage(currentImage));
+        });
+
+        $('.toolbar-body').on('mouseleave', '.gallery-images .thumb-box', function() {
+            $('.image-size').remove();
+        });
+    }
 });
